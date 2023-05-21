@@ -7,6 +7,7 @@ const client = new MongoClient(connectionString);
 let connection;
 try {
   connection = await client.connect();
+  console.log("Connected to the poland_videocameras db");
 } catch(e) {
   console.error(e);
 }

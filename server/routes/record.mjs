@@ -1,13 +1,20 @@
 import express from "express";
-import db from "../db/connection.mjs";
 import { ObjectId } from "mongodb";
+import db from "../db/connection.mjs";
+import collection from "../db/retrieve.mjs";
+import text_to_num from "../helpers/coordinate_transform.mjs"
 
 const router = express.Router();
 
+console.log("GPS Coordinates: ", collection);
+for (let i in collection) {
+  let dec_latitude = handling(collection[i].latitude);
+}
 // This section will help you get a list of all the records.
 router.get("/", async (req, res) => {
   let collection = await db.collection("cities");
   let results = await collection.find({}).toArray(); // returns Array of Objects (title, location, position ...)
+  console.log("Array of cities: ", results);
   res.send(results).status(200);
 });
 
