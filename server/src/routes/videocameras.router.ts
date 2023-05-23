@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import { ObjectId } from "mongodb";
 import { collections } from "../db/database.service";
 import Videocamera from "../db/videocamera";
-import { retrieve_data } from "../db/retrieve";
+import { coordinates_transformation } from "../helpers/coordinate_transform";
 
 export const videocamerasRouter = express.Router();
 videocamerasRouter.use(express.json());
@@ -16,9 +16,9 @@ for (let i in collection) {
 dotenv.config();
 // This section will help you get a list of all the records.
 videocamerasRouter.get("/", async (req: Request, res: Response) => {
-  const DMS_coordinates = await retrieve_data();
-  console.log("Array of cities: ", DMS_coordinates);
-  res.send(DMS_coordinates).status(200);
+  const DD_coordinates = await coordinates_transformation();
+  console.log("Array of cities: ", DD_coordinates);
+  res.send(DD_coordinates).status(200);
 });
 
 // This section will help you get a single record by id

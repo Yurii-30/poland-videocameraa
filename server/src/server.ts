@@ -11,7 +11,7 @@ app.use(express.json());
 
 connectToDatabase()
     .then(() => {
-        app.use("/videocameras", videocamerasRouter);
+        app.use("/", videocamerasRouter);
 
         app.listen(PORT, () => {
             console.log(`Server started at http://localhost:${PORT}`);
