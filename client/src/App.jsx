@@ -4,7 +4,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
  
 // We import all the components we need in our app
-import Main from "./components/main";
+import Main from "./components/Main";
  
 const App = () => {
  return (
