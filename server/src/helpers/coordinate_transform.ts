@@ -1,6 +1,8 @@
+import { ObjectId } from "mongodb";
 import { retrieve_data } from "../db/retrieve"; 
 
 interface DD_Coordinates {
+    _id: ObjectId,
     latitude: number,
     longitude: number
 }
@@ -25,8 +27,9 @@ export async function coordinates_transformation() {
     const DD_geo_coords = [];
     for (let i = 0; i < DMS_coordinates.length; i++) {
         const DD_position: DD_Coordinates = {
-            latitude: DMS_to_DD(DMS_coordinates[i].latitude),
-            longitude: DMS_to_DD(DMS_coordinates[i].longitude)
+            _id: DMS_coordinates[i]._id,
+            latitude: DMS_to_DD(DMS_coordinates[i].position.latitude),
+            longitude: DMS_to_DD(DMS_coordinates[i].position.longitude)
         };
         DD_geo_coords.push(DD_position);
     }

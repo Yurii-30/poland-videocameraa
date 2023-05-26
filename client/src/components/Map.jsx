@@ -1,5 +1,5 @@
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
-import styles from "./map_styles.css";
+// import styles from "./map_styles.css";
 import { useMemo } from "react";
 import { useEffect, useState } from "react";
 
@@ -8,12 +8,25 @@ const Map = () => {
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY
     });
     const geo_center_Poland = process.env.REACT_APP_POLAND_GEO_CENTER.split(',');
-    console.log("Here is a Google API Key: ", process.env.REACT_APP_GOOGLE_API_KEY);
-    console.log("Variable isLoaded = ", isLoaded);
-    console.log("Center Latitude: ", parseFloat(geo_center_Poland[0]));
-    console.log("Center Longitude: ", parseFloat(geo_center_Poland[1]));
-    console.log("************************");
     const geo_center = useMemo(() => ({ lat: parseFloat(geo_center_Poland[0]), lng: parseFloat(geo_center_Poland[1]) }), []);
+    const [markerCoordinates, setMarkerCoordinates] = useState([]);
+    useEffect(() => {
+        async function getMarkerCoordinates() {
+          const response = await fetch(`http://localhost:5050/`);
+      
+          if (!response.ok) {
+            const message = `An error occurred: ${response.statusText}`;
+            window.alert(message);
+            return;
+          }
+          
+          const coords = await response.json();
+          console.log(coords);
+          setMarkerCoordinates(coords);
+        }
+
+          getMarkerCoordinates();
+       }, [markerCoordinates.length]);
     return (
         <div className = "text-3xl font-bold underline">
             {
@@ -24,7 +37,13 @@ const Map = () => {
                         mapContainerClassName = "map-container"
                         center = {geo_center}
                         zoom = {7.5}
-                    />
+                    >
+                        {
+                            markerCoordinates.map(({_id, latitude, longitude}) => (
+                                <Marker position = {{latitude, longitude}}/>
+                            ))
+                        }
+                    </GoogleMap>
                 )
             }
         </div>
