@@ -10,8 +10,9 @@ const Map = () => {
     const [infoWindowF, setInfoWindowF] = useState();
     const [isOpen, setIsOpen] = useState(false);
     const geo_center_Poland = process.env.REACT_APP_POLAND_GEO_CENTER.split(',');
-    const geo_center = useMemo(() => ({ lat: parseFloat(geo_center_Poland[0]), lng: parseFloat(geo_center_Poland[1]) }), []);
+    const geo_center = useMemo(() => ({ lat: parseFloat(geo_center_Poland[0].toString()), lng: parseFloat(geo_center_Poland[1].toString()) }), []);
     
+    console.log("Geographical center of Poland: lang ", geo_center_Poland[0]," long: ", geo_center_Poland[1]);
     const handleActiveMarker = (marker) => {
         if (marker === activeMarker) {
             return;
@@ -58,7 +59,7 @@ const Map = () => {
         <div className = "text-3xl font-bold underline">
             <GoogleMap
                 center = {geo_center}
-                onLoad = {handleOnLoading}
+                zoom = {6.5}
                 onClick = {() => setActiveMarker(null)}
                 mapContainerClassName = "map-container"
             >
@@ -67,7 +68,7 @@ const Map = () => {
                     <Marker
                         key = {_id} 
                         position = {{lat: latitude, lng: longitude}}
-                        onMouseOver = {() => {
+                        onClick = {() => {
                             handleMarkerClick(_id, title, location, latitude, longitude);
                         }}
                     >
