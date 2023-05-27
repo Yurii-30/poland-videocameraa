@@ -9,15 +9,10 @@ export const videocamerasRouter = express.Router();
 videocamerasRouter.use(express.json());
 // *specify a name for collection
 
-/*
-for (let i in collection) {
-  let dec_latitude = handling(collection[i].latitude);
-} */
 dotenv.config();
 // This section will help you get a list of all the records.
 videocamerasRouter.get("/", async (req: Request, res: Response) => {
   const DD_coordinates = await coordinates_transformation();
-  console.log("Array of cities: ", DD_coordinates);
   res.send(DD_coordinates).status(200);
 });
 
