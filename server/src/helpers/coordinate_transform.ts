@@ -3,8 +3,12 @@ import { retrieve_data } from "../db/retrieve";
 
 interface DD_Coordinates {
     _id: ObjectId,
+    title: string,
+    location: string,
     latitude: number,
-    longitude: number
+    longitude: number,
+    livestream_availability: boolean,
+    link: string
 }
 
 function DMS_to_DD (DMS_coordinate: string): number {
@@ -28,8 +32,12 @@ export async function coordinates_transformation() {
     for (let i = 0; i < DMS_coordinates.length; i++) {
         const DD_position: DD_Coordinates = {
             _id: DMS_coordinates[i]._id,
+            title: DMS_coordinates[i].title,
+            location: DMS_coordinates[i].location,
             latitude: DMS_to_DD(DMS_coordinates[i].position.latitude),
-            longitude: DMS_to_DD(DMS_coordinates[i].position.longitude)
+            longitude: DMS_to_DD(DMS_coordinates[i].position.longitude),
+            livestream_availability: DMS_coordinates[i].livestream_availability,
+            link: DMS_coordinates[i].link
         };
         DD_geo_coords.push(DD_position);
     }
