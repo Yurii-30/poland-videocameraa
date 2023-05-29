@@ -22,6 +22,7 @@ const Map = () => {
         setActiveMarker(marker);
     };
     
+    /*
     const handleOnLoading = (map) => {
         setMapReference(map);
         const bounds = new window.google.maps.LatLngBounds();
@@ -29,6 +30,7 @@ const Map = () => {
             bounds.extend({ latitude, longitude }));
         map.fitBounds(bounds);
     }
+    */
 
     const handleMarkerClick = (id, title, location, lat, lng) => {
         mapReference?.panTo({lat, lng});
@@ -64,7 +66,7 @@ const Map = () => {
     }, [markerCoordinates.length]);
 
     return (
-        <div className = "text-3xl font-bold underline">
+        <div className = "h-full w-1 text-3xl font-bold underline">
         {
             isPreview &&
             <div>
@@ -79,7 +81,7 @@ const Map = () => {
                 center = {geo_center}
                 zoom = {6.5}
                 onClick = {() => setActiveMarker(null)}
-                mapContainerClassName = "map-container"
+                mapContainerClassName = {"map-container"}
             >
                 {           
                     markerCoordinates?.map(({ _id, title, location, latitude, longitude, livestream_availability, link }) => ( 
@@ -89,8 +91,8 @@ const Map = () => {
                             icon={{
                                 path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
                                 fillOpacity: 1,
-                                fillColor: "white",
-                                strokeColor: "red",
+                                fillColor: "#fcfafa",
+                                strokeColor: "#f00c1b",
                                 scale: 5,
                               }}
                             onClick = {() => {
