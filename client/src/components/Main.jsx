@@ -7,11 +7,12 @@ const Main = () => {
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY
     });
 
-    return (isLoaded ? 
-        <Map/> :
-        <h1>
-            Loading...
-        </h1> 
+    return (
+        isLoaded ? 
+            <Map/> :
+            <h1>
+                Loading...
+            </h1> 
     )
 }
 
