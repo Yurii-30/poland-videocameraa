@@ -6,7 +6,12 @@ export const collections: { cities?: mongoDB.Collection } = {}
 export async function connectToDatabase () {
     dotenv.config();
     const client: mongoDB.MongoClient = new mongoDB.MongoClient(process.env.ATLAS_URI as string);
-    await client.connect();
+    try {
+        await client.connect();
+        console.log("Connected to the MongoDB Atlas Cluster");
+    } catch(e) {
+        console.error(e);
+    }
     const db: mongoDB.Db = client.db(process.env.DB_NAME as string);
     const citiesCollection: mongoDB.Collection = db.collection(process.env.COLLECTION_NAME as string);
     collections.cities = citiesCollection;
