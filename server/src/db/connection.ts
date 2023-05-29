@@ -12,7 +12,7 @@ export const db = async() => {
     let connection: any;
     try {
         connection = await client.connect();
-        console.log("Connected to the poland_videocameras db");
+        console.log("Connected to the MongoDB Atlas Cluster");
     } catch(e) {
         console.error(e);
     }
