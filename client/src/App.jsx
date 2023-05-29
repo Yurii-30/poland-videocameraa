@@ -8,11 +8,9 @@ import Main from "./components/Main";
  
 const App = () => {
  return (
-   <div>
-     <Routes>
-       <Route exact path="/" element={<Main />} />
-     </Routes>
-   </div>
+    <Routes>
+      <Route exact path="/" element={<Main />} />
+    </Routes>
  );
 };
 
