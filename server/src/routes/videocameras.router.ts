@@ -5,18 +5,20 @@ import { collections } from "../db/database.service";
 import Videocamera from "../db/videocamera";
 import { coordinates_transformation } from "../helpers/coordinate_transform";
 
+//налаштування маршрутизації та обробка даних у форматі JSON
 export const videocamerasRouter = express.Router();
 videocamerasRouter.use(express.json());
-// *specify a name for collection
 
+// об’єкт, що представляє проаналізований файл .env.
 dotenv.config();
-// This section will help you get a list of all the records.
+
+//отримання даних колекції через HTTP-метод GET та надсилання відповіді клієнту 
 videocamerasRouter.get("/", async (req: Request, res: Response) => {
-  const DD_coordinates = await coordinates_transformation();
-  res.send(DD_coordinates).status(200);
+  const videocameras = await coordinates_transformation();
+  res.send(videocameras ).status(200);
 });
 
-// This section will help you get a single record by id
+//отримання документу відеокамери через HTTP-метод GET та надсилання відповіді клієнту 
 videocamerasRouter.get("/:id", async (req: Request, res: Response) => {
     const id = req?.params?.id;
     try {
@@ -30,7 +32,7 @@ videocamerasRouter.get("/:id", async (req: Request, res: Response) => {
     }
 });
 
-// This section will help you create a new record.
+//створення документу відеокамери через HTTP-метод POST та надсилання відповіді клієнту
 videocamerasRouter.post("/", async (req: Request, res: Response) => {
     try {
         const newVideocamera = req.body as Videocamera;
@@ -46,7 +48,7 @@ videocamerasRouter.post("/", async (req: Request, res: Response) => {
     }
 });
 
-// This section will help you update a record by id.
+//заміна документу відеокамери корисним навантаженням запиту через HTTP-метод PUT та надсилання відповіді клієнту
 videocamerasRouter.put("/:id", async (req: Request, res: Response) => {
     const id = req?.params?.id;
 
@@ -67,7 +69,7 @@ videocamerasRouter.put("/:id", async (req: Request, res: Response) => {
     }
 });
 
-// This section will help you delete a record
+//видалення документу відеокамери через HTTP-метод DELETE та надсилання відповіді клієнту 
 videocamerasRouter.delete("/:id", async (req, res) => {
     const id = req?.params?.id;
 
