@@ -3,19 +3,15 @@ import ReactPlayer from "react-player";
 
 const VideoStreamingWindow = (props) => {
     const [ videoURL, setVideoURL ] = useState(props.link);
+
+    useEffect(() => {
+        console.log("Link to the video: ", videoURL);
+    },[])
     return (
-        <div>
-            {
-                <ReactPlayer
-                    className = "react-player"
-                    url = {videoURL}    
-                    width = "100%"
-                    height = "75%"
-                    controls
-                    playing
-                />
-            }
-            
+        <div className = "border-black">
+            <video src = {videoURL} type = "video/mp4" width = "100%">
+                Sorry, your browser doesn't support the embedded video
+            </video>
         </div>
         
     );
