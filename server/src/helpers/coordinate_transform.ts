@@ -1,7 +1,8 @@
 import { ObjectId } from "mongodb";
 import { retrieve_data } from "../db/retrieve"; 
 
-interface DD_Coordinates {
+//визначення інтерфейсу подання даних про відеокамери
+interface videocamera_format {
     _id: ObjectId,
     title: string,
     location: string,
@@ -11,6 +12,7 @@ interface DD_Coordinates {
     link: string
 }
 
+//оголошення функції, яка перетворює географічні координати з формату градуси/хвилини/секунди у формат десяткових градусів 
 function DMS_to_DD (DMS_coordinate: string): number {
     const units = ['°', '\'', '"'];
     let processed_DMS_coordinate = DMS_coordinate;
@@ -27,19 +29,20 @@ function DMS_to_DD (DMS_coordinate: string): number {
     return parseFloat(sum.toFixed(6));
 }
 export async function coordinates_transformation() {
-    const DMS_coordinates = await retrieve_data();
-    const DD_geo_coords = [];
-    for (let i = 0; i < DMS_coordinates.length; i++) {
-        const DD_position: DD_Coordinates = {
-            _id: DMS_coordinates[i]._id,
-            title: DMS_coordinates[i].title,
-            location: DMS_coordinates[i].location,
-            latitude: DMS_to_DD(DMS_coordinates[i].position.latitude),
-            longitude: DMS_to_DD(DMS_coordinates[i].position.longitude),
-            livestream_availability: DMS_coordinates[i].livestream_availability,
-            link: DMS_coordinates[i].link
+    //отримання стандартизованих даних про маркери
+    const initial_videocameras = await retrieve_data();
+    const final_videocameras = [];
+    for (let i = 0; i < initial_videocameras.length; i++) {
+        const videocamera: videocamera_format = {
+            _id: initial_videocameras[i]._id,
+            title: initial_videocameras[i].title,
+            location: initial_videocameras[i].location,
+            latitude: DMS_to_DD(initial_videocameras[i].position.latitude), //перетворення широти
+            longitude: DMS_to_DD(initial_videocameras[i].position.longitude), //перетворення довготи
+            livestream_availability: initial_videocameras[i].livestream_availability,
+            link: initial_videocameras[i].link
         };
-        DD_geo_coords.push(DD_position);
+        final_videocameras.push(videocamera); //занесення до масиву даних про відеокамери
     }
-    return DD_geo_coords;
+    return final_videocameras;
 }
