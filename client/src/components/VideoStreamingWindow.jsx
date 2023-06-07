@@ -9,9 +9,14 @@ const VideoStreamingWindow = (props) => {
     },[])
     return (
         <div className = "border-black">
-            <video src = {videoURL} type = "video/mp4" width = "100%">
-                Sorry, your browser doesn't support the embedded video
-            </video>
+            <ReactPlayer
+                className = "react-player"
+                url = {videoURL}    
+                width = "1380px"
+                height = "680px"
+                controls
+                playing
+            />
         </div>
         
     );
