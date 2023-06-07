@@ -4,6 +4,7 @@ import styles from "./map_styles.css";
 import { useMemo } from "react";
 import { useEffect, useState } from "react";
 import VideoStreamingWindow from "./VideoStreamingWindow";
+import PhotoStreamingWindow from "./PhotoStreamingWindow";
 
 const Map = () => {
     // Оголошення змінних стану та їхнього початкового значення
@@ -12,8 +13,10 @@ const Map = () => {
     const [mapReference, setMapReference] = useState();
     const [infoWindowF, setInfoWindowF] = useState();
     const [videoStreamingWindow, setVideoStreamingWindow] = useState();
+    const [photoStreamingWindow, setPhotoStreamingWindow] = useState();
     const [isOpen, setIsOpen] = useState(false);
     const [isPreview, setIsPreview] = useState(false);
+    const [isVideo, setIsVideo] = useState(false);
     const geo_center_Poland = process.env.REACT_APP_POLAND_GEO_CENTER.toString().split(',');
     const geo_center = useMemo(() => ({ lat: parseFloat(geo_center_Poland[0]), lng: parseFloat(geo_center_Poland[1]) }), []);
     const options = {
@@ -45,9 +48,15 @@ const Map = () => {
         setInfoWindowF({ id, title, location });
     };
 
-    const handleMarkerDoubleClick = (id, livestream_availability, link) => {
+    const handleMarkerDoubleClick = (id, title, location, livestream_availability, link) => {
         setIsPreview(true);
-        setVideoStreamingWindow({ id, livestream_availability, link });
+        if (livestream_availability) {
+            setIsVideo(true);
+            setVideoStreamingWindow({ id, link });
+        }
+        else {
+            setPhotoStreamingWindow({ id, title, location, link });
+        }
     }
 
     useEffect(() => {
@@ -74,10 +83,20 @@ const Map = () => {
     return (
         <div className = "h-full w-1 text-3xl font-bold underline">
         {
-            isPreview &&
+            isPreview && isVideo &&
             <div>
                 <VideoStreamingWindow
                     link = {videoStreamingWindow.link}
+                />
+            </div>
+        }
+        {
+            isPreview && !isVideo &&
+            <div>
+                <PhotoStreamingWindow
+                    title = {photoStreamingWindow.title}
+                    location = {photoStreamingWindow.location}
+                    link = {photoStreamingWindow.link}
                 />
             </div>
         }
@@ -105,7 +124,7 @@ const Map = () => {
                             handleMarkerClick(_id, title, location, latitude, longitude);
                         }}
                         onDblClick = {() => {
-                            handleMarkerDoubleClick(_id, livestream_availability, link);
+                            handleMarkerDoubleClick(_id, title, location, livestream_availability, link);
                         }}
                     >
                     {
