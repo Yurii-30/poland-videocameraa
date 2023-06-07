@@ -1,4 +1,5 @@
 import { GoogleMap, Marker, InfoWindowF } from "@react-google-maps/api";
+import { Clusterer } from "@react-google-maps/marker-clusterer";
 import styles from "./map_styles.css";
 import { useMemo } from "react";
 import { useEffect, useState } from "react";
@@ -15,6 +16,9 @@ const Map = () => {
     const [isPreview, setIsPreview] = useState(false);
     const geo_center_Poland = process.env.REACT_APP_POLAND_GEO_CENTER.toString().split(',');
     const geo_center = useMemo(() => ({ lat: parseFloat(geo_center_Poland[0]), lng: parseFloat(geo_center_Poland[1]) }), []);
+    const options = {
+        imagePath:  "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m3.png"
+    }
     /*
     const handleActiveMarker = (marker) => {
         if (marker === activeMarker) {
@@ -70,7 +74,6 @@ const Map = () => {
     return (
         <div className = "h-full w-1 text-3xl font-bold underline">
         {
-            // 
             isPreview &&
             <div>
                 <VideoStreamingWindow
@@ -88,36 +91,36 @@ const Map = () => {
             >
             {
                 markerCoordinates?.map(({ _id, title, location, latitude, longitude, livestream_availability, link }) => ( 
-                <Marker
-                    key = {_id} 
-                    position = {{lat: latitude, lng: longitude}}
-                    icon={{
-                        path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-                        fillOpacity: 1,
-                        fillColor: "#fcfafa",
-                        strokeColor: "#f00c1b",
-                        scale: 5,
-                    }}
-                    onClick = {() => {
-                        handleMarkerClick(_id, title, location, latitude, longitude);
-                    }}
-                    onDblClick = {() => {
-                        handleMarkerDoubleClick(_id, livestream_availability, link);
-                    }}
-                >
-                {
-                    isOpen && infoWindowF.id === _id && (
-                        <InfoWindowF
-                            onCloseClick={() => {
-                                setIsOpen(false);
-                            }}
-                        >
-                            <h2>{infoWindowF.title}, {infoWindowF.location}</h2>
-                        </InfoWindowF>
-                    )
-                }
-                </Marker>
-                )) 
+                    <Marker
+                        key = {_id} 
+                        position = {{lat: latitude, lng: longitude}}
+                        icon={{
+                            path: window.google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                            fillOpacity: 1,
+                            fillColor: "#fcfafa",
+                            strokeColor: "#f00c1b",
+                            scale: 5,
+                        }}
+                        onClick = {() => {
+                            handleMarkerClick(_id, title, location, latitude, longitude);
+                        }}
+                        onDblClick = {() => {
+                            handleMarkerDoubleClick(_id, livestream_availability, link);
+                        }}
+                    >
+                    {
+                        isOpen && infoWindowF.id === _id && (
+                            <InfoWindowF
+                                onCloseClick={() => {
+                                    setIsOpen(false);
+                                }}
+                            >
+                                <h2>{infoWindowF.title}, {infoWindowF.location}</h2>
+                            </InfoWindowF>
+                        )
+                    }
+                    </Marker>
+                ))
             }
             </GoogleMap>
         }
