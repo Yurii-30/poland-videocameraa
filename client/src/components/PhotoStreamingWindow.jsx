@@ -13,7 +13,7 @@ const PhotoStreamingWindow = (props) => {
 
     return (
         <div className = "border-black">
-            <img src = {{photoURL}} width = "640" height = "480"/>
+            <img src = {photoURL} width = "640px" height = "480px"/>
         </div>
     );
 }
